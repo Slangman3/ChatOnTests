@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import pages.IntegriVideoChatPage;
 
 import java.util.concurrent.TimeUnit;
+
 import static org.testng.Assert.*;
 
 public class ChatInputIsEmptyTest {
@@ -14,7 +15,7 @@ public class ChatInputIsEmptyTest {
     ChromeDriver driver;
 
     @BeforeClass
-    public void openDriver(){
+    public void openDriver() {
         System.setProperty("webdriver.chrome.driver", "src/test/resources/webdrivers/chromedriver.exe");
         driver = new ChromeDriver();
         driver.manage().window().maximize();
@@ -31,7 +32,7 @@ public class ChatInputIsEmptyTest {
     }
 
     @Test
-    public void inputByEnter(){
+    public void inputByEnter() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.writeText("Test");
@@ -40,7 +41,7 @@ public class ChatInputIsEmptyTest {
     }
 
     @Test
-    public void inputThousandCharsByEnter(){
+    public void inputThousandCharsByEnter() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.writeText(TestData.SIMBOLS_1000);
@@ -49,7 +50,7 @@ public class ChatInputIsEmptyTest {
     }
 
     @Test
-    public void messageWithLinkDimaGoogleDrive(){
+    public void messageWithLinkDimaGoogleDrive() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.writeText("https://drive.google.com/file/d/1WFDNF50ejDthZlyoiFhojP5-1Gz-sKOs/view");
@@ -58,7 +59,7 @@ public class ChatInputIsEmptyTest {
     }
 
     @Test
-    public void messageWithLinkTutBy(){
+    public void messageWithLinkTutBy() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.writeText("https://www.tut.by/");
@@ -84,17 +85,37 @@ public class ChatInputIsEmptyTest {
     }
 
     @Test
-    public void editMessageCheck(){
+    public void editMessageCheck() {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.writeText("Hello bro");
         chat.sendMessage();
-        chat.editClickAndReMessageOn("Hello World");
-        chat.verifyEditText("Hello World");
+        chat.writeText("Hello World");
+        chat.sendMessage();
+        chat.writeText("Hello dude");
+        chat.sendMessage();
+        chat.waiterOfMessages(3);
+        chat.editMessage(2, "Hello Onliner");
+        chat.removeMessage(3);
+        chat.setEditAlert(3);
+    }
+
+    @Test
+    public void editMessageAllDeleteCheck() {
+        IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
+        chat.openPage();
+        chat.writeText("Hello bro");
+        chat.sendMessage();
+        chat.writeText("Hello World");
+        chat.sendMessage();
+        chat.writeText("Hello dude");
+        chat.sendMessage();
+        chat.waiterOfMessages(3);
+        chat.editMessageAllDelete(3);
     }
 
     @AfterClass
-    public void closeDriver(){
+    public void closeDriver() {
         driver.quit();
     }
 

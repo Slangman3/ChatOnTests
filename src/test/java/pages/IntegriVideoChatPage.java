@@ -1,20 +1,16 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.mustache.Value;
 import tests.TestData;
+
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
-import java.security.Key;
-import java.util.EmptyStackException;
+import java.time.Duration;
+import java.util.List;
 
 import static org.testng.Assert.*;
 
@@ -31,7 +27,9 @@ public class IntegriVideoChatPage extends TestData {
     By messageText = By.className("integri-chat-message-text");
     By messageWithLink = By.className("integri-chat-message-attachment-link");
     By editBtn = By.className("integri-chat-edit-message");
-    By editArea = By.xpath("//*[@id='integri-component-chat']/div[4]/div[2]/div/div/div[2]/textarea");
+    By removeBtn = By.className("integri-chat-remove-message");
+    By editArea = By.xpath("//*[contains(@class, 'integri-chat-message ')]//textarea");
+    By editAlert = By.className("integri-notify-error");
 
     public IntegriVideoChatPage(WebDriver driver) {
         this.driver = driver;
@@ -47,12 +45,13 @@ public class IntegriVideoChatPage extends TestData {
         driver.findElement(inputArea).sendKeys(text);
     }
 
-    public void sendMessageByEnter(){
+    public void sendMessageByEnter() {
         driver.findElement(inputArea).sendKeys(Keys.ENTER);
     }
 
     public void sendMessage() {
         driver.findElement(sendMessageButton).click();
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(messageText));
     }
 
     public String inviteClick() {
@@ -97,11 +96,31 @@ public class IntegriVideoChatPage extends TestData {
         assertTrue(JSCode.isEmpty());
     }
 
-    public void editClickAndReMessageOn(String text){
-        driver.findElement(editBtn).click();
+    public void waiterOfMessages(int numberOfAllMessages){
+        wait.until(ExpectedConditions.numberOfElementsToBe(messageText, numberOfAllMessages));
+    }
+
+    public void setEditAlert(int numberOfMessage){
+        Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+        driver.switchTo().alert().accept();
+    }
+    public void editMessage(int numberOfMessage, String newText) {
+        driver.findElements(editBtn).get(numberOfMessage - 1).click();
         driver.findElement(editArea).clear();
-        driver.findElement(editArea).sendKeys(text);
+        driver.findElement(editArea).sendKeys(newText);
         driver.findElement(editArea).sendKeys(Keys.ENTER);
+    }
+
+    public void editMessageAllDelete(int numberOfMessage) {
+        driver.findElements(editBtn).get(numberOfMessage - 1).click();
+        driver.findElement(editArea).clear();
+        driver.findElement(editArea).sendKeys(Keys.ENTER);
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(editAlert));
+        wait.until(ExpectedConditions.textToBe(editAlert, "Message cannot be empty!"));
+    }
+
+    public void removeMessage(int numberOfMessgae) {
+        driver.findElements(removeBtn).get(numberOfMessgae - 1).click();
     }
 
     public void verifyEditText(String expectedMessage) {
@@ -110,14 +129,14 @@ public class IntegriVideoChatPage extends TestData {
         assertEquals(actual, expectedMessage);
     }
 
-    public void verifyMessageLinkDimaGoogleDisk(){
+    public void verifyMessageLinkDimaGoogleDisk() {
         assertFalse(driver.findElements(messageWithLink).isEmpty());
         String text = driver.findElement(By.className("integri-chat-message-attachment-link")).getAttribute("innerText");
         assertEquals(text, "drive.google.com\n" +
                 "lesson_7_selenium_advanced.pptx - Google Drive");
     }
 
-    public void verifyMessageLinkTutBy(){
+    public void verifyMessageLinkTutBy() {
         assertFalse(driver.findElements(messageWithLink).isEmpty());
         String text = driver.findElement(By.className("integri-chat-message-attachment-link")).getAttribute("innerText");
         assertEquals(text, "undefined");
