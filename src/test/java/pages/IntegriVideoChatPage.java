@@ -1,6 +1,7 @@
 package pages;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.SendKeysAction;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import tests.TestData;
@@ -8,9 +9,12 @@ import tests.TestData;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.desktop.OpenFilesEvent;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
+import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 import static org.testng.Assert.*;
 
@@ -30,6 +34,7 @@ public class IntegriVideoChatPage extends TestData {
     By removeBtn = By.className("integri-chat-remove-message");
     By editArea = By.xpath("//*[contains(@class, 'integri-chat-message ')]//textarea");
     By editAlert = By.className("integri-notify-error");
+    By skipBtn = By.className("close-demo-screen");
 
     public IntegriVideoChatPage(WebDriver driver) {
         this.driver = driver;
@@ -49,9 +54,14 @@ public class IntegriVideoChatPage extends TestData {
         driver.findElement(inputArea).sendKeys(Keys.ENTER);
     }
 
-    public void sendMessage() {
+    public void sendMessage() throws InterruptedException {
         driver.findElement(sendMessageButton).click();
-        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(messageText));
+        Thread.sleep(1000);
+    }
+
+    public void browseToUpload(){
+        driver.findElement(By.className("integri-file-upload-manual-init")).click();
+
     }
 
     public String inviteClick() {
@@ -104,6 +114,7 @@ public class IntegriVideoChatPage extends TestData {
         Alert alert = wait.until(ExpectedConditions.alertIsPresent());
         driver.switchTo().alert().accept();
     }
+
     public void editMessage(int numberOfMessage, String newText) {
         driver.findElements(editBtn).get(numberOfMessage - 1).click();
         driver.findElement(editArea).clear();
@@ -117,6 +128,11 @@ public class IntegriVideoChatPage extends TestData {
         driver.findElement(editArea).sendKeys(Keys.ENTER);
         wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(editAlert));
         wait.until(ExpectedConditions.textToBe(editAlert, "Message cannot be empty!"));
+    }
+
+    public void skipAlertPresent(){
+        wait.until(ExpectedConditions.textToBe(skipBtn, "Skip"));
+        driver.findElement(skipBtn).click();
     }
 
     public void removeMessage(int numberOfMessgae) {

@@ -6,6 +6,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.IntegriVideoChatPage;
 
+import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
 import static org.testng.Assert.*;
@@ -23,7 +24,7 @@ public class ChatInputIsEmptyTest {
     }
 
     @Test
-    public void inputEnter() {
+    public void inputEnter() throws InterruptedException {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.writeText("Test");
@@ -85,7 +86,7 @@ public class ChatInputIsEmptyTest {
     }
 
     @Test
-    public void editMessageCheck() {
+    public void editMessageCheck() throws InterruptedException {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.writeText("Hello bro");
@@ -101,7 +102,7 @@ public class ChatInputIsEmptyTest {
     }
 
     @Test
-    public void editMessageAllDeleteCheck() {
+    public void editMessageAllDeleteCheck() throws InterruptedException {
         IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
         chat.openPage();
         chat.writeText("Hello bro");
@@ -114,9 +115,49 @@ public class ChatInputIsEmptyTest {
         chat.editMessageAllDelete(3);
     }
 
-    @AfterClass
-    public void closeDriver() {
-        driver.quit();
+    @Test
+    public void manyMessagesCheck() throws InterruptedException {
+        IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
+        chat.openPage();
+        chat.writeText("Hello bro");
+        chat.sendMessage();
+        chat.writeText("Hello World");
+        chat.sendMessage();
+        chat.writeText("Hello dude");
+        chat.sendMessage();
+        chat.writeText("Hello bro");
+        chat.sendMessage();
+        chat.writeText("Hello World");
+        chat.sendMessage();
+        chat.writeText("Hello dude");
+        chat.sendMessage();
+        chat.writeText("Hello bro");
+        chat.sendMessage();
+        chat.writeText("Hello World");
+        chat.sendMessage();
+        chat.writeText("Hello dude");
+        chat.sendMessage();
+        chat.writeText("Hello bro");
+        chat.sendMessage();
+        chat.writeText("Hello World");
+        chat.sendMessage();
+        chat.skipAlertPresent();
+        chat.writeText("Oops it is 12th message!");
+        chat.sendMessage();
+        chat.skipAlertPresent();
     }
 
+    @Test
+    public void drugDropCheck(){
+        IntegriVideoChatPage chat = new IntegriVideoChatPage(driver);
+        chat.openPage();
+        chat.clickUpload();
+        chat.browseToUpload();
+
+    }
+
+//    @AfterClass
+//    public void closeDriver() {
+//        driver.quit();
+//    }
 }
