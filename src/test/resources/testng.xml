@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite thread-count="4" name="Validate calculator" parallel="tests">
+    <test name="Validete Sum">
+        <classes>
+            <class name="testng.CalculatorOnSum"/>
+        </classes>
+    </test>
+    <test name="Validete Divide">
+        <classes>
+            <class name="testng.CalculatorOnDivide"/>
+        </classes>
+    </test>
+    <test name="Validete Minus">
+        <classes>
+            <class name="testng.CalculatorOnMinus"/>
+        </classes>
+    </test>
+    <test name="Validete Multiply">
+        <classes>
+            <class name="testng.CalculatorOnMultiply"/>
+        </classes>
+    </test>
+</suite>
