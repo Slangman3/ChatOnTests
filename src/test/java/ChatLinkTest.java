@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import java.awt.datatransfer.*;
 import static org.testng.Assert.*;
 
-public class LinksOnTests {
+public class ChatLinkTest {
     @Test
     public void linksTest() throws IOException, UnsupportedFlavorException {
         System.setProperty("webdriver.chrome.driver", "src/test/resources/webdrivers/chromedriver.exe");
