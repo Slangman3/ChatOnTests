@@ -1,7 +1,10 @@
 package testng;
 
+import calc.Calculator;
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 public class CalculatorOnSum {
 
@@ -12,16 +15,13 @@ public class CalculatorOnSum {
 
     @AfterMethod
     public void afterMethod() {
-        System.out.println(" @AfterMEthod ended sum test");
+        System.out.println(" @AfterMethod ended sum test");
     }
 
-    @Test(dataProvider = "getNumbers")
-    public void sum(int n1, int n2, int n3) {
-        double newSum = new Calculator().sum(n1,n2);
-        Assert.assertEquals(newSum, n3);
+    @Test(retryAnalyzer = RetryAnalizer.class)
+    public void sum() {
+        double newSum = new Calculator().sum(9.0,3.0);
+        Assert.assertEquals(newSum,12.0);
     }
 
-    @DataProvider(name = "setNumbers"){
-
-    }
 }
