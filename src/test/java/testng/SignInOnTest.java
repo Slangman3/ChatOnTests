@@ -1,10 +1,12 @@
-package tests;
+package testng;
 
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
 import java.util.concurrent.TimeUnit;
+
 import pages.IntegriVideoChatLoginPageFactory;
 import pages.IntegriVideoChatSignInPage;
 
@@ -31,6 +33,18 @@ public class SignInOnTest {
         signInPage.verifySignInPage();
     }
 
+    @Test
+    public void signUpNewAcc() {
+        IntegriVideoChatLoginPageFactory pageFactory = new IntegriVideoChatLoginPageFactory(driver);
+        IntegriVideoChatSignInPage signInPage = new IntegriVideoChatSignInPage(driver);
+        pageFactory
+                .openPage()
+                .login("tms2@mailinator.com", "Password01")
+                .loginBtnClick();
+        signInPage.loginAcces();
+
+
+    }
     @AfterClass
     public void closeDriver() {
         driver.quit();

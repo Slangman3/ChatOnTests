@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite thread-count="2" name="Validate Chat Entrance" parallel="tests">
+    <test name="Validete Chat Entrance">
+        <classes>
+            <class name="testng.SignInOnTest"/>
+        </classes>
+    </test>
+</suite>
